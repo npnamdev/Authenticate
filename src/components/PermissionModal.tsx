@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 
 export default function PermissionModal({ role }: PermissionModalProps) {
@@ -42,16 +42,6 @@ export default function PermissionModal({ role }: PermissionModalProps) {
                 { key: "deleteUser", label: "Quyền xóa người dùng" },
             ],
         },
-        // {
-        //     name: "Danh sách quyền bài viết",
-        //     permission: [
-        //         { key: "getPosts", label: "Quyền xem danh sách người dùng" },
-        //         { key: "getPostById", label: "Quyền xem chi tiết người dùng" },
-        //         { key: "createPost", label: "Quyền tạo người dùng" },
-        //         { key: "updatePost", label: "Quyền cập nhật người dùng" },
-        //         { key: "deletePost", label: "Quyền xóa người dùng" },
-        //     ],
-        // },
     ];
 
     return (
@@ -59,31 +49,36 @@ export default function PermissionModal({ role }: PermissionModalProps) {
             <DialogTrigger asChild>
                 <Button variant="outline">Sửa vai trò</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-2xl">
-                <div className="min-h-[300px]">
+            <DialogContent className="sm:max-w-3xl px-8">
+                <DialogHeader className="border-b pb-4">
+                    <DialogTitle>Edit profile</DialogTitle>
+                </DialogHeader>
+                <div className="">
                     <h3 className="text-xl font-bold mb-4">{role.name}</h3>
                     <form className="space-y-4">
                         {permissionList.map((group) => (
                             <div key={group.name}>
-                                <h4 className="font-semibold text-lg">{group.name}</h4>
-                                {group.permission.map((permission) => (
-                                    <div key={permission.key} className="flex items-center justify-between gap-2">
-                                        <label htmlFor={permission.key} className="text-sm font-medium">
-                                            {permission.label}
-                                        </label>
-                                        <Switch
-                                            id={permission.key}
-                                            checked={permissions[permission.key as keyof typeof permissions]}
-                                            onCheckedChange={() => handlePermissionChange(permission.key)}
-                                        />
-                                    </div>
-                                ))}
+                                <h4 className="font-semibold text-lg mb-5">{group.name}</h4>
+                                <div className="grid grid-cols-2 gap-5">
+                                    {group.permission.map((permission) => (
+                                        <div key={permission.key} className="flex items-center gap-2">
+                                            <Switch
+                                                id={permission.key}
+                                                checked={permissions[permission.key as keyof typeof permissions]}
+                                                onCheckedChange={() => handlePermissionChange(permission.key)}
+                                            />
+                                            <label htmlFor={permission.key} className="text-sm font-semibold">
+                                                {permission.label}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                     </form>
-                    <div className="mt-6">
-                        <Button onClick={handleUpdatePermissions}>Cập nhật quyền</Button>
-                    </div>
+                    <DialogFooter className="border-t mt-5 pt-5">
+                        <Button onClick={handleUpdatePermissions} className="text-white">Cập nhật quyền</Button>
+                    </DialogFooter>
                 </div>
             </DialogContent>
         </Dialog>
