@@ -15,4 +15,9 @@ const verifyEmailToken = async (token: string): Promise<any> => {
     return response.data;
 }
 
-export { loginUser, registerUser, verifyEmailToken };
+const getUsers = async (): Promise<any> => {
+    const response = await api.get(`api/v1/users`);
+    return response.data;
+}
+
+export { loginUser, registerUser, verifyEmailToken, getUsers };
