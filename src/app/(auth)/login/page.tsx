@@ -25,7 +25,7 @@ const LoginPage = () => {
 
       if (res && res.status == "success") {
         localStorage.setItem("accessToken", res.accessToken);
-        router.push("/login");
+        router.push("/");
         toast(res.message, { action: { label: "Undo", onClick: () => console.log("Undo") }, });
       }
     } catch (error) {

@@ -6,6 +6,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Boxes, ChartColumnDecreasing, ChevronDown, ChevronRight, Gift, LayoutGrid, LogOut, Settings, ShoppingCart, Truck, UsersRound, WalletCards } from "lucide-react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 interface SubmenuItem {
     name: string;
@@ -202,22 +214,36 @@ export default function MenuBar() {
                 <div className="flex flex-col justify-center gap-2 px-3 border-t pt-2">
                     {settingMenu.map((menu) => (
                         menu.onClick ? (
-                            <button
-                                onClick={menu.onClick}
-                                key={menu.key}
-                                className="h-9 font-medium rounded-md flex gap-2.5 items-center px-3 hover:bg-gray-100"
-                            >
-                                {menu.icon}
-                                <span className="line-clamp-1">{menu.name}</span>
-                            </button>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <button
+                                        key={menu.key}
+                                        className="h-9 font-medium rounded-md flex gap-2.5 items-center px-3 hover:bg-gray-100"
+                                    >
+                                        {menu.icon}
+                                        <span className="line-clamp-1">{menu.name}</span>
+                                    </button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Đăng xuất?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Bạn có chắc chắn muốn đăng xuất không?
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={menu.onClick} className="text-white">Continue</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         ) : (
                             <Link
                                 href={menu.href || "#"}
                                 key={menu.key}
                                 className="h-9 font-medium rounded-md flex gap-2.5 items-center px-3 hover:bg-gray-100"
                             >
-                                {menu.icon}
-                                <span className="line-clamp-1">{menu.name}</span>
+                                {menu.icon} <span className="line-clamp-1">{menu.name}</span>
                             </Link>
                         )
                     ))}
