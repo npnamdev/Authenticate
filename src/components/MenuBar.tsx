@@ -51,7 +51,7 @@ export default function MenuBar() {
             key: "user-management",
             submenus: [
                 { name: "Danh sách người dùng", href: "/manage/user" },
-                { name: "Vai trò và phân quyền", href: "/manage/user/role" },
+                { name: "Vai trò và phân quyền", href: "/manage/role-permission" },
             ],
         },
         {

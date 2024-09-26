@@ -2,34 +2,29 @@
 
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+import "moment/locale/vi"; // Import ngôn ngữ tiếng Việt cho moment
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getUsers } from "@/services/api";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical } from "lucide-react";
+import { getRoles } from "@/services/api";
+import PermissionModal from "@/components/PermissionModal";
 
-interface User {
-    username: string;
-    email: string;
-    role: {
-        name: string;
-    };
-    isActive: Boolean;
-    createdAt: string;
-}
+// Giả sử Role có cấu trúc như thế này
 
-export default function UserPage() {
-    const [users, setUsers] = useState<User[]>([]);
+
+export default function RolePermissionPage() {
+    const [roles, setRoles] = useState<Role[]>([]);
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            const res = await getUsers();
+        const fetchRoles = async () => {
+            const res = await getRoles();
             if (res.status === "success") {
-                setUsers(res.data);
+                setRoles(res.data);
                 console.log("Dữ liệu từ API:", res.data);
             }
         };
-        fetchUsers();
+        fetchRoles();
     }, []);
 
     return (
@@ -38,31 +33,29 @@ export default function UserPage() {
                 <TableHeader>
                     <TableRow>
                         <TableHead className="text-black font-bold px-6">#</TableHead>
-                        <TableHead className="text-black font-bold px-6">Tên người dùng</TableHead>
-                        <TableHead className="text-black font-bold px-6">Email</TableHead>
-                        <TableHead className="text-black font-bold px-6">Vai trò</TableHead>
-                        <TableHead className="text-black font-bold px-6">Trạng thái</TableHead>
+                        <TableHead className="text-black font-bold px-6">Id</TableHead>
+                        <TableHead className="text-black font-bold px-6">Tên vai trò</TableHead>
                         <TableHead className="text-black font-bold px-6">Ngày tạo</TableHead>
+                        <TableHead className="text-black font-bold px-6">Ngày Cập nhật</TableHead>
                         <TableHead className="text-black font-bold px-6"></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {users.length === 0 ? (
+                    {roles.length === 0 ? (
                         <TableRow>
-                            <TableCell colSpan={7} className="text-center">Đang tải dữ liệu...</TableCell>
+                            <TableCell colSpan={4} className="text-center">Đang tải dữ liệu...</TableCell>
                         </TableRow>
                     ) : (
-                        users.map((user, index) => (
+                        roles.map((role, index) => (
                             <TableRow key={index}>
                                 <TableCell className="py-2.5 px-6 font-medium">{index + 1}</TableCell>
-                                <TableCell className="py-2.5 px-6 font-medium">{user.username}</TableCell>
-                                <TableCell className="py-2.5 px-6 font-medium">{user.email}</TableCell>
-                                <TableCell className="py-2.5 px-6 font-medium">{user.role.name}</TableCell>
+                                <TableCell className="py-2.5 px-6 font-medium">{role._id}</TableCell>
+                                <TableCell className="py-2.5 px-6 font-medium">{role.name}</TableCell>
                                 <TableCell className="py-2.5 px-6 font-medium">
-                                    {user.isActive ? "Hoạt động" : "Không hoạt động"}
+                                    {moment(role.createdAt).locale("en").format("MMM Do YY")}
                                 </TableCell>
                                 <TableCell className="py-2.5 px-6 font-medium">
-                                    {moment(user.createdAt).locale("en").format("MMM Do YY")}
+                                    {moment(role.updatedAt).locale("en").format("MMM Do YY")}
                                 </TableCell>
                                 <TableCell className="py-2.5 px-6 font-medium">
                                     <Popover>
@@ -74,8 +67,8 @@ export default function UserPage() {
                                         <PopoverContent side="left" className="w-auto rounded-lg shadow-lg">
                                             <div className="w-[120px] flex flex-col gap-1">
                                                 <Button variant="outline" className="w-full">Xem chi tiết</Button>
-                                                <Button variant="outline" className="w-full">Sửa người dùng</Button>
-                                                <Button variant="outline" className="w-full">Xóa người dùng</Button>
+                                                <PermissionModal role={role}/>
+                                                <Button variant="outline" className="w-full">Xóa vai trò</Button>
                                             </div>
                                         </PopoverContent>
                                     </Popover>

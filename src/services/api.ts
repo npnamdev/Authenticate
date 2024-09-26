@@ -20,4 +20,9 @@ const getUsers = async (): Promise<any> => {
     return response.data;
 }
 
-export { loginUser, registerUser, verifyEmailToken, getUsers };
+const getRoles = async (): Promise<any> => {
+    const response = await api.get(`api/v1/roles`);
+    return response.data;
+}
+
+export { loginUser, registerUser, verifyEmailToken, getUsers, getRoles };
