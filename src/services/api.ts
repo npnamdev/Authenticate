@@ -16,7 +16,7 @@ const verifyEmailToken = async (token: string): Promise<any> => {
 }
 
 const getUsers = async (): Promise<any> => {
-    const response = await api.get(`api/v1/users`);
+    const response = await api.get(`api/v1/users?page=1&limit=20`);
     return response.data;
 }
 
@@ -30,4 +30,9 @@ const createUser = async (username: string, email: string, password: string): Pr
     return response.data;
 }
 
-export { loginUser, registerUser, verifyEmailToken, getUsers, getRoles, createUser };
+const deleteUser = async (userId: string): Promise<any> => {
+    const response = await api.delete(`api/v1/users/${userId}`);
+    return response && response.data ? response.data : response;
+}
+
+export { loginUser, registerUser, verifyEmailToken, getUsers, getRoles, createUser, deleteUser };
