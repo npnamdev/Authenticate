@@ -25,4 +25,9 @@ const getRoles = async (): Promise<any> => {
     return response.data;
 }
 
-export { loginUser, registerUser, verifyEmailToken, getUsers, getRoles };
+const createUser = async (username: string, email: string, password: string): Promise<any> => {
+    const response = await api.post('api/v1/users', { username, email, password });
+    return response.data;
+}
+
+export { loginUser, registerUser, verifyEmailToken, getUsers, getRoles, createUser };

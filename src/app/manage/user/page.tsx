@@ -7,6 +7,7 @@ import { getUsers } from "@/services/api";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical } from "lucide-react";
+import ModalCreateUser from "@/components/ModalCreateUser";
 
 interface User {
     username: string;
@@ -26,7 +27,6 @@ export default function UserPage() {
             const res = await getUsers();
             if (res.status === "success") {
                 setUsers(res.data);
-                console.log("Dữ liệu từ API:", res.data);
             }
         };
         fetchUsers();
@@ -34,6 +34,10 @@ export default function UserPage() {
 
     return (
         <div className="bg-white shadow-md rounded-lg p-1">
+            <div className="h-[70px] border-b flex items-center justify-between px-5">
+                Search
+              <ModalCreateUser />
+            </div>
             <Table className="text-black">
                 <TableHeader>
                     <TableRow>
